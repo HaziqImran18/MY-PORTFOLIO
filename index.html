@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Haziq Imran — AI Engineer</title>
+<meta name="description" content="Muhammad Haziq Imran — AI Software Engineer. Multi-agent systems, RAG pipelines and LLM evaluation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;1,700;1,800&family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#03080b; --bg2:#061117; --panel:rgba(10,24,30,.62); --line:rgba(120,255,240,.14); --line2:rgba(120,255,240,.28);
+  --fg:#eafcff; --mute:#9fbfc4; --dim:#5f8389;
+  --teal:#3ff5e3; --teal2:#14b8a6; --vio:#8b5cf6; --mag:#d946ef;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+::selection{background:var(--teal);color:#012}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.cz{font-family:Cinzel,serif}
+.bc{font-family:"Barlow Condensed",sans-serif}
+
+/* ---------- NAV ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:80;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.solid{background:rgba(3,8,11,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:var(--line)}
+.nav .wrap{display:flex;align-items:center;gap:30px;height:74px}
+.brand{display:flex;align-items:center;gap:12px;font-family:Cinzel,serif;font-weight:700;font-size:18px;letter-spacing:.12em}
+.brand svg{width:34px;height:34px}
+.links{display:flex;gap:28px;margin-left:auto}
+.links a{font-family:"Barlow Condensed";font-weight:600;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);transition:color .2s;position:relative}
+.links a:hover{color:var(--teal)}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:2px;background:var(--teal);transform:scaleX(0);transition:transform .3s var(--ease);box-shadow:0 0 10px var(--teal)}
+.links a:hover::after{transform:scaleX(1)}
+
+/* buttons */
+.btn{position:relative;display:inline-flex;align-items:center;gap:10px;height:52px;padding:0 28px;font-family:"Barlow Condensed";font-weight:700;font-size:18px;letter-spacing:.14em;text-transform:uppercase;
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);transition:transform .25s var(--ease),filter .25s}
+.btn.p{background:linear-gradient(100deg,var(--teal),#22d3ee 60%,var(--vio));color:#011417}
+.btn.p:hover{transform:translateY(-2px);filter:brightness(1.15) drop-shadow(0 0 18px rgba(63,245,227,.55))}
+.btn.g{background:rgba(63,245,227,.08);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line2)}
+.btn.g:hover{background:rgba(63,245,227,.16);transform:translateY(-2px)}
+.btn.sm{height:42px;padding:0 20px;font-size:15px}
+.btn svg{width:18px;height:18px}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;height:100vh;min-height:720px;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%}
+.rays{position:absolute;inset:-20% -10% 0;background:conic-gradient(from 180deg at 50% 0%,transparent 0deg,rgba(63,245,227,.12) 8deg,transparent 16deg,rgba(63,245,227,.08) 24deg,transparent 34deg,rgba(63,245,227,.14) 42deg,transparent 52deg,transparent 308deg,rgba(63,245,227,.12) 318deg,transparent 328deg,rgba(63,245,227,.08) 338deg,transparent 350deg);
+  filter:blur(6px);mix-blend-mode:screen;animation:rays 9s ease-in-out infinite alternate;transform-origin:50% 0}
+@keyframes rays{to{transform:rotate(3deg) scaleX(1.06);opacity:.75}}
+.sigil{position:absolute;left:50%;top:44%;width:min(78vh,820px);aspect-ratio:1;transform:translate(-50%,-50%);opacity:.9;pointer-events:none}
+.sigil svg{width:100%;height:100%;overflow:visible}
+.sigil .r1{transform-origin:50% 50%;animation:spin 80s linear infinite}
+.sigil .r2{transform-origin:50% 50%;animation:spin 120s linear infinite reverse}
+.sigil .r3{transform-origin:50% 50%;animation:spin 50s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skyline{position:absolute;left:0;right:0;bottom:0;width:100%;height:46%;pointer-events:none}
+.fog{position:absolute;left:-10%;right:-10%;bottom:-6%;height:42%;pointer-events:none;
+  background:radial-gradient(ellipse 50% 60% at 30% 70%,rgba(63,245,227,.16),transparent 70%),radial-gradient(ellipse 50% 60% at 75% 80%,rgba(139,92,246,.14),transparent 70%);filter:blur(10px);animation:fog 14s ease-in-out infinite alternate}
+@keyframes fog{to{transform:translateX(4%)}}
+.shade{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 45%,transparent 30%,rgba(3,8,11,.85) 100%),linear-gradient(0deg,var(--bg) 0%,transparent 26%)}
+.hc{position:relative;z-index:3;padding:0 20px;width:100%}
+.pre{font-family:Cinzel;font-weight:600;font-size:clamp(13px,1.6vw,18px);letter-spacing:.6em;color:var(--teal);text-shadow:0 0 18px rgba(63,245,227,.6);padding-left:.6em;opacity:0;animation:rise 1.2s .2s var(--ease) forwards}
+.title{position:relative;display:inline-block;margin:22px 0 18px;padding:18px 0;opacity:0;animation:rise 1.4s .35s var(--ease) forwards}
+.title::before,.title::after{content:"";position:absolute;left:-4%;right:-4%;height:2px;background:linear-gradient(90deg,transparent,rgba(234,252,255,.9) 12%,rgba(234,252,255,.9) 88%,transparent)}
+.title::before{top:0}.title::after{bottom:0}
+.title h1{font-family:Cinzel;font-weight:700;font-size:clamp(46px,10.5vw,150px);line-height:.95;letter-spacing:.03em;color:#fff;
+  text-shadow:0 2px 0 #9fe,0 0 30px rgba(63,245,227,.35),0 12px 40px rgba(0,0,0,.8)}
+.title h1 .of{display:inline-flex;flex-direction:column;vertical-align:middle;font-size:.17em;line-height:1.05;letter-spacing:.12em;margin:0 .5em 0 .55em;color:var(--teal);text-shadow:0 0 12px rgba(63,245,227,.7)}
+.sub{font-family:"Barlow Condensed";font-weight:600;font-size:clamp(16px,2.2vw,24px);letter-spacing:.38em;text-transform:uppercase;color:var(--mute);padding-left:.38em;opacity:0;animation:rise 1.2s .6s var(--ease) forwards}
+.hcta{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;margin-top:38px;opacity:0;animation:rise 1.2s .8s var(--ease) forwards}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.scrollcue{display:none;position:absolute;z-index:3;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:10px;font-family:"Barlow Condensed";letter-spacing:.3em;font-size:13px;color:var(--dim)}
+.scrollcue i{width:22px;height:36px;border:2px solid var(--dim);border-radius:12px;position:relative}
+.scrollcue i::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:7px;border-radius:2px;background:var(--teal);transform:translateX(-50%);animation:cue 1.6s infinite}
+@keyframes cue{to{transform:translate(-50%,12px);opacity:0}}
+
+/* stat strip */
+.strip{position:relative;z-index:4;margin-top:-70px}
+.strip .in{display:grid;grid-template-columns:repeat(4,1fr);background:linear-gradient(100deg,rgba(20,184,166,.18),rgba(139,92,246,.18));border:1px solid var(--line2);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  clip-path:polygon(18px 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%,0 18px)}
+.st{padding:26px 28px;border-right:1px solid var(--line)}
+.st:last-child{border-right:0}
+.st b{display:block;font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:clamp(36px,4.4vw,54px);line-height:1;letter-spacing:.01em}
+.st b em{font-style:inherit;color:var(--teal)}
+.st span{font-size:14px;color:var(--mute)}
+
+/* ---------- SECTIONS ---------- */
+section{position:relative;padding:120px 0;overflow-x:clip}
+.kick{display:inline-flex;align-items:center;gap:12px;font-family:"Barlow Condensed";font-weight:600;font-size:16px;letter-spacing:.32em;text-transform:uppercase;color:var(--teal);margin-bottom:16px}
+.kick::before{content:"";width:34px;height:2px;background:var(--teal);box-shadow:0 0 10px var(--teal)}
+h2{font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:clamp(44px,7vw,92px);line-height:.92;text-transform:uppercase;letter-spacing:.005em}
+h2 .gr{background:linear-gradient(100deg,var(--teal),#7dd3fc 45%,var(--mag));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{color:var(--mute);font-size:18px;max-width:600px;margin-top:18px}
+.glow-bg{position:absolute;pointer-events:none;border-radius:50%;filter:blur(90px);opacity:.35}
+
+/* panel with cut corners + gradient border */
+.pn{position:relative;background:var(--panel);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  clip-path:polygon(16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%,0 16px)}
+.pn::before{content:"";position:absolute;inset:0;padding:1px;background:linear-gradient(140deg,rgba(63,245,227,.55),rgba(63,245,227,.08) 40%,rgba(139,92,246,.1) 60%,rgba(217,70,239,.5));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;clip-path:inherit}
+
+/* ---------- PROFILE ---------- */
+.prof{display:grid;grid-template-columns:440px 1fr;gap:60px;align-items:start}
+.champ{padding:0;overflow:hidden}
+.portrait{position:relative;aspect-ratio:4/4.6;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,rgba(63,245,227,.35),transparent 60%),linear-gradient(180deg,#0b2a2f,#050c10)}
+.portrait canvas{position:absolute;inset:0;width:100%;height:100%}
+.portrait .em{position:absolute;inset:0;display:grid;place-items:center}
+.portrait .em svg{width:78%;height:78%}
+.portrait .ini{position:absolute;inset:0;display:grid;place-items:center;font-family:Cinzel;font-weight:700;font-size:96px;color:#fff;text-shadow:0 0 30px var(--teal),0 0 60px rgba(63,245,227,.5)}
+.portrait .lvl{position:absolute;top:18px;left:18px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.2em;font-size:14px;padding:6px 12px;background:rgba(3,8,11,.6);box-shadow:inset 0 0 0 1px var(--line2)}
+.portrait .ol{position:absolute;top:18px;right:18px;display:flex;align-items:center;gap:8px;font-size:13px;color:#8ff5c0;padding:6px 12px;background:rgba(3,8,11,.6);box-shadow:inset 0 0 0 1px rgba(143,245,192,.35)}
+.portrait .ol::before{content:"";width:8px;height:8px;border-radius:50%;background:#34e39a;box-shadow:0 0 10px #34e39a}
+.portrait .nm{position:absolute;left:0;right:0;bottom:0;padding:70px 24px 22px;background:linear-gradient(0deg,rgba(3,8,11,.95),transparent)}
+.portrait .nm h3{font-family:Cinzel;font-weight:700;font-size:26px;letter-spacing:.04em;line-height:1.15}
+.portrait .nm p{font-family:"Barlow Condensed";letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-size:15px;margin-top:4px}
+.cinfo{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+.cinfo div{background:#061218;padding:16px 20px}
+.cinfo small{display:block;font-family:"Barlow Condensed";letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--dim)}
+.cinfo b{font-weight:600;font-size:15px}
+.bio p{color:var(--mute);font-size:17.5px;margin-top:16px}
+.bio p b{color:var(--fg);font-weight:600}
+.attrs{display:grid;grid-template-columns:1fr 1fr;gap:20px 36px;margin-top:36px}
+.at .l{display:flex;justify-content:space-between;font-family:"Barlow Condensed";font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:15px;margin-bottom:8px}
+.at .l b{color:var(--teal)}
+.at .t{height:8px;background:rgba(255,255,255,.06);position:relative;overflow:hidden;clip-path:polygon(4px 0,100% 0,calc(100% - 4px) 100%,0 100%)}
+.at .t i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--teal2),var(--teal) 70%,#fff);box-shadow:0 0 14px var(--teal);transition:width 1.8s var(--ease)}
+.at .t i::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 10px,rgba(3,8,11,.6) 10px 12px)}
+
+/* campaign */
+.camp{display:grid;grid-template-columns:1.25fr 1fr;gap:22px;margin-top:70px}
+.cc{padding:32px}
+.cc h4{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-size:15px;margin-bottom:22px;display:flex;align-items:center;gap:10px}
+.ev{position:relative;padding-left:28px;padding-bottom:28px;border-left:1px solid var(--line2)}
+.ev:last-child{padding-bottom:0;border-color:transparent}
+.ev::before{content:"";position:absolute;left:-6px;top:6px;width:11px;height:11px;transform:rotate(45deg);background:var(--teal);box-shadow:0 0 12px var(--teal)}
+.ev small{font-family:"Barlow Condensed";letter-spacing:.16em;text-transform:uppercase;color:var(--dim);font-size:14px}
+.ev h5{font-size:20px;font-weight:600;margin:2px 0}
+.ev h5 span{color:var(--mute);font-weight:400}
+.ev ul{list-style:none;margin-top:10px;display:grid;gap:8px;color:var(--mute);font-size:15.5px}
+.ev li{padding-left:18px;position:relative}
+.ev li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:2px;background:var(--teal)}
+.ev li b{color:var(--fg)}
+.cert{display:flex;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.cert:last-child{border:0}
+.seal{flex:none;width:50px;height:50px;display:grid;place-items:center}
+.seal svg{width:100%;height:100%}
+.cert b{display:block;font-weight:600}
+.cert span{font-size:14px;color:var(--mute)}
+.course{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.course span{font-size:13px;padding:5px 11px;background:rgba(63,245,227,.07);box-shadow:inset 0 0 0 1px var(--line);color:var(--mute)}
+
+/* ---------- QUESTS ---------- */
+.qhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:46px}
+.qf{display:flex;flex-wrap:wrap;gap:8px}
+.qf button{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:15px;padding:9px 18px;color:var(--mute);box-shadow:inset 0 0 0 1px var(--line);
+  clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);transition:.2s}
+.qf button.on,.qf button:hover{background:var(--teal);color:#011417;box-shadow:none}
+.quests{display:grid;grid-template-columns:repeat(6,1fr);gap:22px}
+.q{grid-column:span 3;display:flex;flex-direction:column;cursor:pointer;transition:transform .45s var(--ease)}
+.q.sm{grid-column:span 3}
+.q:hover{transform:translateY(-6px)}
+.q.hide{display:none}
+.banner{position:relative;height:250px;overflow:hidden}
+.q.sm .banner{height:190px}
+.banner .bg{position:absolute;inset:0;transition:transform .8s var(--ease)}
+.q:hover .banner .bg{transform:scale(1.07)}
+.banner .ic{position:absolute;right:-4%;top:50%;transform:translateY(-50%);width:62%;height:130%;opacity:.95;transition:transform .8s var(--ease)}
+.q:hover .banner .ic{transform:translateY(-50%) rotate(-4deg) scale(1.05)}
+.banner .ic svg{width:100%;height:100%;fill:none;stroke-width:.6;stroke-linecap:round;stroke-linejoin:round}
+.banner .wm{position:absolute;left:24px;bottom:16px;font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:64px;line-height:.9;text-transform:uppercase;color:rgba(255,255,255,.08);letter-spacing:.01em;max-width:70%}
+.banner .rar{position:absolute;top:16px;left:16px;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.2em;font-size:13px;padding:5px 12px;text-transform:uppercase;color:#011417;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+.rar.leg{background:linear-gradient(90deg,#fbbf24,#f97316)}
+.rar.epi{background:linear-gradient(90deg,#c084fc,#d946ef)}
+.rar.rare{background:linear-gradient(90deg,var(--teal),#38bdf8)}
+.qb{padding:26px 28px 28px;display:flex;flex-direction:column;flex:1}
+.qb .ty{font-family:"Barlow Condensed";letter-spacing:.22em;text-transform:uppercase;font-size:14px;color:var(--teal)}
+.qb h3{font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:40px;line-height:1;text-transform:uppercase;margin:6px 0 10px}
+.q.sm .qb h3{font-size:32px}
+.qb p{color:var(--mute);font-size:16px}
+.loot{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+.loot div{flex:1 1 90px;padding:12px 14px;background:rgba(63,245,227,.06);box-shadow:inset 0 0 0 1px var(--line)}
+.loot b{display:block;font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:28px;line-height:1;color:var(--fg)}
+.loot span{font-size:12.5px;color:var(--mute);line-height:1.3;display:block;margin-top:4px}
+.qfoot{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:auto;padding-top:6px}
+.tech{display:flex;flex-wrap:wrap;gap:6px}
+.tech span{font-size:12.5px;padding:3px 9px;background:rgba(255,255,255,.05);color:var(--mute)}
+.more{flex:none;font-family:"Barlow Condensed";font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:15px;color:var(--teal);display:flex;align-items:center;gap:6px}
+.more svg{width:16px;height:16px;transition:transform .3s}
+.q:hover .more svg{transform:translateX(4px)}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;background:rgba(1,5,7,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;visibility:hidden;transition:.35s}
+.modal.open{opacity:1;visibility:visible}
+.mbox{width:min(880px,100%);max-height:90vh;overflow:auto;background:#061218;transform:translateY(24px);transition:transform .45s var(--ease)}
+.modal.open .mbox{transform:none}
+.mbox .banner{height:200px}
+.mbody{padding:30px 34px 36px}
+.mbody h3{font-family:"Barlow Condensed";font-style:italic;font-weight:800;font-size:46px;line-height:1;text-transform:uppercase}
+.mbody h4{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-size:14px;margin:26px 0 12px}
+.mbody ul{list-style:none;display:grid;gap:10px}
+.mbody li{padding-left:22px;position:relative;color:#cfe6ea}
+.mbody li::before{content:"";position:absolute;left:0;top:.6em;width:8px;height:8px;transform:rotate(45deg);background:var(--teal)}
+.mx{position:absolute;top:14px;right:14px;z-index:3;width:42px;height:42px;display:grid;place-items:center;background:rgba(3,8,11,.7);box-shadow:inset 0 0 0 1px var(--line2);font-size:18px}
+
+/* ---------- ARSENAL ---------- */
+.ars{display:grid;gap:44px;margin-top:56px}
+.grp h4{font-family:"Barlow Condensed";font-weight:600;letter-spacing:.24em;text-transform:uppercase;font-size:16px;color:var(--mute);margin-bottom:16px;display:flex;align-items:center;gap:14px}
+.grp h4::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line2),transparent)}
+.grp h4 b{color:var(--teal);font-weight:700}
+.sk{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:12px}
+.s{position:relative;padding:20px 12px 16px;text-align:center;background:linear-gradient(180deg,rgba(15,38,46,.75),rgba(6,16,21,.75));box-shadow:inset 0 0 0 1px var(--line);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);transition:transform .3s var(--ease),box-shadow .3s,background .3s}
+.s:hover{transform:translateY(-5px);box-shadow:inset 0 0 0 1px var(--teal),0 0 0 0;background:linear-gradient(180deg,rgba(20,70,76,.85),rgba(6,16,21,.85))}
+.s .im{width:48px;height:48px;margin:0 auto 12px;display:grid;place-items:center;transition:transform .3s var(--ease),filter .3s}
+.s:hover .im{transform:scale(1.12);filter:drop-shadow(0 0 12px rgba(63,245,227,.55))}
+.s .im img{width:44px;height:44px;object-fit:contain}
+.s .im.inv img{filter:invert(1) brightness(1.1)}
+.s .im.lt{background:#e9f7f8;border-radius:12px}
+.s .im.lt img{width:36px;height:36px}
+.s .im svg{width:44px;height:44px;fill:none;stroke:var(--teal);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.s b{display:block;font-weight:600;font-size:14.5px;line-height:1.25}
+.s.main::after{content:"MAIN";position:absolute;top:8px;right:8px;font-family:"Barlow Condensed";font-weight:700;font-size:10px;letter-spacing:.14em;color:#011417;background:var(--teal);padding:1px 6px}
+
+/* ---------- CONTACT ---------- */
+.fight{position:relative;overflow:hidden;text-align:center;padding:140px 0 130px}
+.fight canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.8}
+.fight .wrap{position:relative;z-index:2}
+.fight h2{font-size:clamp(52px,10vw,140px)}
+.fight .lede{margin:22px auto 0}
+.socials{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:52px;text-align:left}
+.so{display:flex;align-items:center;gap:14px;padding:18px;transition:transform .3s var(--ease)}
+.so:hover{transform:translateY(-4px)}
+.so .si{flex:none;width:46px;height:46px;display:grid;place-items:center;background:rgba(63,245,227,.1);box-shadow:inset 0 0 0 1px var(--line2)}
+.so .si svg{width:22px;height:22px;fill:none;stroke:var(--teal);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.so small{display:block;font-family:"Barlow Condensed";letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--dim)}
+.so b{font-weight:500;font-size:15px;word-break:break-word}
+.fight .hcta{opacity:1;animation:none;margin-top:44px}
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--dim);font-size:13.5px}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+.rv{opacity:0;transform:translateY(36px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:1060px){
+  .prof{grid-template-columns:1fr;gap:40px}
+  .champ{max-width:460px}
+  .camp{grid-template-columns:1fr}
+  .socials{grid-template-columns:1fr 1fr}
+  .links{display:none}
+  .nav .btn{margin-left:auto}
+}
+@media (max-width:760px){
+  .wrap{padding:0 16px}
+  section{padding:84px 0}
+  .strip{margin-top:-40px}
+  .strip .in{grid-template-columns:1fr 1fr}
+  .st{padding:18px;border-bottom:1px solid var(--line)}
+  .st:nth-child(2n){border-right:0}
+  .quests{grid-template-columns:1fr}
+  .q,.q.sm{grid-column:auto}
+  .banner{height:190px}
+  .banner .wm{font-size:46px}
+  .qb{padding:22px}
+  .qb h3{font-size:34px}
+  .qfoot{flex-direction:column;align-items:flex-start}
+  .attrs,.socials{grid-template-columns:1fr}
+  .cc{padding:24px}
+  .sk{grid-template-columns:repeat(3,1fr)}
+  .s{padding:16px 6px 12px}
+  .s .im,.s .im img,.s .im svg{width:38px;height:38px}
+  .s b{font-size:13px}
+  .mbody{padding:24px 20px 28px}
+  .mbody h3{font-size:36px}
+  .title::before,.title::after{left:0;right:0}
+  .brand span{display:none}
+  .title h1 .of{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.pre,.title,.sub,.hcta{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- reusable defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="tg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eafcff"/><stop offset=".5" stop-color="#3ff5e3"/><stop offset="1" stop-color="#14b8a6"/></linearGradient>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset="1" stop-color="#d97706"/></linearGradient>
+  <filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <symbol id="mark" viewBox="0 0 40 40"><path d="M20 2 36 11v18L20 38 4 29V11z" fill="none" stroke="url(#tg)" stroke-width="1.6"/><path d="M13 12v16M27 12v16M13 20h14" stroke="#fff" stroke-width="2.4" stroke-linecap="square"/><circle cx="20" cy="20" r="2" fill="#3ff5e3"/></symbol>
+</defs></svg>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="brand"><svg><use href="#mark"/></svg><span>HAZIQ</span></a>
+    <nav class="links"><a href="#profile">Profile</a><a href="#quests">Projects</a><a href="#arsenal">Skills</a><a href="#contact">Contact</a></nav>
+    <a href="Haziq-Resume.pdf" download class="btn p sm">Resume</a>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <canvas id="embers"></canvas>
+  <div class="rays"></div>
+  <div class="sigil" aria-hidden="true">
+    <svg viewBox="-200 -200 400 400" id="sigil">
+      <g filter="url(#gl)" stroke="#3ff5e3" fill="none">
+        <g class="r1" opacity=".55"><circle r="188" stroke-width=".8"/><circle r="178" stroke-width=".4" stroke-dasharray="2 6"/></g>
+        <g class="r2" opacity=".7" id="runes"></g>
+        <g class="r3" opacity=".6"><circle r="120" stroke-width=".8"/><path d="M0-120 104 60-104 60z" stroke-width=".7"/><path d="M0 120-104-60 104-60z" stroke-width=".7"/></g>
+        <g opacity=".85" id="net"></g>
+      </g>
+    </svg>
+  </div>
+  <svg class="skyline" viewBox="0 0 1600 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <defs><linearGradient id="sk1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d3a3f"/><stop offset="1" stop-color="#03080b"/></linearGradient>
+      <linearGradient id="sk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06171c"/><stop offset="1" stop-color="#03080b"/></linearGradient></defs>
+    <path fill="url(#sk1)" opacity=".7" d="M0 330 60 300 90 250 100 180 110 250 140 270 170 220 180 150 186 110 192 150 200 220 240 260 300 280 340 240 350 200 360 240 420 290 520 300 560 260 600 270 680 320 760 330 800 300 900 330 1000 300 1060 260 1090 210 1100 150 1106 120 1112 150 1120 210 1150 250 1200 270 1250 230 1262 170 1270 120 1278 170 1290 230 1340 280 1400 260 1440 230 1452 190 1464 230 1500 270 1600 290 1600 500 0 500z"/>
+    <path fill="url(#sk2)" d="M0 400 80 380 120 340 130 300 140 340 200 370 280 360 320 330 330 280 340 230 346 200 352 230 362 280 372 330 420 360 520 380 600 350 640 310 650 260 656 230 662 260 672 310 720 350 820 380 940 390 1000 360 1040 320 1050 280 1058 250 1066 280 1076 320 1120 360 1220 370 1300 340 1330 300 1340 260 1346 230 1352 260 1362 300 1400 340 1480 370 1600 360 1600 500 0 500z"/>
+    <g fill="#3ff5e3" opacity=".8"><rect x="342" y="300" width="3" height="5"/><rect x="652" y="290" width="3" height="5"/><rect x="1054" y="300" width="3" height="5"/><rect x="1343" y="290" width="3" height="5"/><rect x="183" y="200" width="2" height="4" opacity=".5"/><rect x="1103" y="190" width="2" height="4" opacity=".5"/></g>
+  </svg>
+  <div class="fog"></div>
+  <div class="shade"></div>
+
+  <div class="hc">
+    <div class="pre">MUHAMMAD</div>
+    <div class="title"><h1>HAZIQ<span class="of"><span>THE</span><span>AI</span></span>IMRAN</h1></div>
+    <div class="sub">AI Software Engineer · Agent Builder</div>
+    <div class="hcta">
+      <a href="#profile" class="btn p">Enter the realm
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#quests" class="btn g">View projects</a>
+    </div>
+  </div>
+</header>
+
+<div class="strip"><div class="wrap"><div class="in rv">
+  <div class="st"><b data-n="8"><em>0</em>+</b><span>AI projects shipped</span></div>
+  <div class="st"><b><em data-n="92">0</em>%</b><span>Root-cause accuracy</span></div>
+  <div class="st"><b><em data-n="85">0</em>+</b><span>Automated tests written</span></div>
+  <div class="st"><b><em data-n="6">0</em></b><span>Custom MCP servers</span></div>
+</div></div></div>
+
+<!-- ================= PROFILE ================= -->
+<section id="profile">
+  <div class="glow-bg" style="width:520px;height:520px;background:#14b8a6;left:-200px;top:120px"></div>
+  <div class="wrap">
+    <div class="prof">
+      <aside class="pn champ rv">
+        <div class="portrait">
+          <canvas id="pcv"></canvas>
+          <div class="em"><svg viewBox="-100 -100 200 200" fill="none" stroke="#3ff5e3" filter="url(#gl)">
+            <circle r="92" stroke-width=".6" opacity=".5" stroke-dasharray="1 4"/>
+            <path d="M0-86 74-43v86L0 86-74 43v-86z" stroke-width="1.2" opacity=".85"/>
+            <path d="M0-70 61-35v70L0 70-61 35v-70z" stroke-width=".5" opacity=".5"/>
+          </svg></div>
+          <div class="ini">HI</div>
+          <span class="lvl">LVL 26 · AI CLASS</span>
+          <span class="ol">Open to work</span>
+          <div class="nm"><h3>Muhammad Haziq Imran</h3><p>AI Software Engineer</p></div>
+        </div>
+        <div class="cinfo">
+          <div><small>Origin</small><b>Rahim Yar Khan, PK</b></div>
+          <div><small>Class</small><b>Agent Builder</b></div>
+          <div><small>programing Language</small><b>Python</b></div>
+          <div><small>Languages</small><b>English · Urdu</b></div>
+        </div>
+      </aside>
+
+      <div class="bio">
+        <div class="kick rv">Player profile</div>
+        <h2 class="rv">Building AI that <span class="gr">earns its victories</span></h2>
+        <div class="rv">
+          <p>I'm an AI Software Engineer who builds <b>LLM-powered applications</b>, <b>agentic AI systems</b>, <b>multi-agent architectures</b> and <b>RAG pipelines</b>.</p>
+          <p>My strengths are agent orchestration, context and memory management, and reliability engineering. I use evidence grounding, structured-output validation, prompt-injection defense and automated testing so AI systems are more <b>accurate, faster and cheaper</b> to run.</p>
+          <p>I also build bilingual tools for <b>Urdu and English</b> speakers, because good AI should work for everyone. I'm graduating with a BS in Artificial Intelligence (2026) and I'm ready for my first full-time AI Engineer role.</p>
+        </div>
+        <div class="attrs rv" id="attrs"></div>
+      </div>
+    </div>
+
+    <div class="camp">
+      <div class="pn cc rv">
+        <h4>⚔ Work Experience</h4>
+        <div class="ev">
+          <small>Jun – Sep 2025 · Rawalpindi</small>
+          <h5>AI/ML Engineer Intern <span>· Ezitech Institute</span></h5>
+          <ul>
+            <li>Fine-tuned a <b>BERT</b> fake-news detector with HuggingFace Transformers: <b>~93% accuracy</b> on 5,000+ articles.</li>
+            <li>Built a phishing-site classifier with scikit-learn: <b>~91% accuracy, 0.90 F1, 0.95 ROC-AUC</b>.</li>
+            <li>Made a Comic Story Generator (Groq LLM + Coqui TTS) that cut manual content time by <b>~70%</b>.</li>
+          </ul>
+        </div>
+        <div class="ev">
+          <small>2023 – Present · Remote</small>
+          <h5>AI Developer <span>· Freelance &amp; self-directed</span></h5>
+          <ul>
+            <li>Shipped <b>5+ AI applications</b> across GenAI, RAG, computer vision and NLP.</li>
+            <li>Built bilingual Roman Urdu / English tools for education and wellness.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pn cc rv">
+        <h4>🛡 Education &amp; honours</h4>
+        <div class="ev" style="padding-bottom:22px">
+          <small>2022 – 2026</small>
+          <h5>BS Artificial Intelligence</h5>
+          <p style="color:var(--mute);font-size:15px">Khwaja Fareed University of Engineering &amp; IT, Rahim Yar Khan</p>
+          <div class="course"><span>Machine Learning</span><span>Deep Learning</span><span>NLP</span><span>Computer Vision</span><span>Reinforcement Learning</span><span>Databases</span></div>
+        </div>
+        <div class="cert"><div class="seal"><svg viewBox="0 0 50 50"><path d="M25 3l6 4 7-1 3 6 6 3-1 7 4 6-4 6 1 7-6 3-3 6-7-1-6 4-6-4-7 1-3-6-6-3 1-7-4-6 4-6-1-7 6-3 3-6 7 1z" fill="url(#gold)"/><path d="M18 25l5 5 9-10" stroke="#3b2200" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><b>Career Essentials in Generative AI</b><span>Microsoft · LinkedIn Learning</span></div></div>
+        <div class="cert"><div class="seal"><svg viewBox="0 0 50 50"><path d="M25 3l6 4 7-1 3 6 6 3-1 7 4 6-4 6 1 7-6 3-3 6-7-1-6 4-6-4-7 1-3-6-6-3 1-7-4-6 4-6-1-7 6-3 3-6 7 1z" fill="url(#gold)"/><path d="M18 25l5 5 9-10" stroke="#3b2200" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><b>AI Advanced Course</b><span>Xeven Solutions</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="quests" style="padding-top:40px">
+  <div class="glow-bg" style="width:600px;height:600px;background:#8b5cf6;right:-260px;top:200px"></div>
+  <div class="wrap">
+    <div class="qhead">
+      <div><div class="kick rv">Quest log</div><h2 class="rv">Projects <span class="gr">conquered</span></h2></div>
+      <div class="qf rv" id="qf"><button class="on" data-f="all">All</button><button data-f="agent">Agents</button><button data-f="rag">RAG</button><button data-f="ml">ML / CV</button></div>
+    </div>
+    <div class="quests" id="ql"></div>
+  </div>
+</section>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+  <div class="mbox pn" style="position:relative">
+    <button class="mx" id="mx" aria-label="Close">✕</button>
+    <div id="mban"></div>
+    <div class="mbody">
+      <div class="qb" style="padding:0"><div class="ty" id="mty"></div></div>
+      <h3 id="mt"></h3>
+      <h4>Objectives</h4><ul id="ml"></ul>
+      <h4>Rewards</h4><div class="loot" id="mr" style="margin:0"></div>
+      <h4>Loadout</h4><div class="tech" id="mi"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ARSENAL ================= -->
+<section id="arsenal" style="padding-top:40px">
+  <div class="wrap">
+    <div class="kick rv">Arsenal</div>
+    <h2 class="rv">Weapons of <span class="gr">choice</span></h2>
+    <p class="lede rv">The tools he fights with. Tiles marked MAIN are his core build.</p>
+    <div class="ars" id="ars"></div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section class="fight" id="contact">
+  <canvas id="embers2"></canvas>
+  <div class="wrap">
+    <div class="kick rv" style="justify-content:center">Multiplayer</div>
+    <h2 class="rv">Join the <span class="gr">fight</span></h2>
+    <p class="lede rv">Open to AI Engineer roles, freelance projects and collaborations in Generative AI and agent development. WhatsApp or email gets the fastest reply.</p>
+    <div class="socials">
+      <a class="pn so rv" href="mailto:hazziq595959@gmail.com"><span class="si"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg></span><span><small>Email</small><b>hazziq595959@gmail.com</b></span></a>
+      <a class="pn so rv" href="https://wa.me/923251234666" target="_blank" rel="noopener"><span class="si"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-4A8 8 0 1 1 20 12z"/></svg></span><span><small>WhatsApp</small><b>+92 325 1234666</b></span></a>
+      <a class="pn so rv" href="https://www.linkedin.com/in/haziqimran59" target="_blank" rel="noopener"><span class="si"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg></span><span><small>LinkedIn</small><b>in/haziqimran59</b></span></a>
+      <a class="pn so rv" href="https://github.com/HaziqImran18" target="_blank" rel="noopener"><span class="si"><svg viewBox="0 0 24 24"><path d="M9 19c-4 1.5-4-2-6-2.5M15 21v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></span><span><small>GitHub</small><b>HaziqImran18</b></span></a>
+    </div>
+    <div class="hcta rv">
+      <a href="mailto:hazziq595959@gmail.com" class="btn p">Send a message</a>
+      <a href="Haziq-Resume.pdf" download class="btn g">Download resume</a>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>© <span id="yr"></span> Muhammad Haziq Imran</span><span>AI Software Engineer · Rahim Yar Khan, Pakistan</span></div></footer>
+
+<script>
+const $=s=>document.querySelector(s);
+$('#yr').textContent=new Date().getFullYear();
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* nav */
+const nav=$('#nav');const ns=()=>nav.classList.toggle('solid',scrollY>40);addEventListener('scroll',ns,{passive:true});ns();
+
+/* ---------- sigil: runes + neural net ---------- */
+(()=>{const NS='http://www.w3.org/2000/svg';const rg=$('#runes');
+  const glyphs=['M-4-6v12M-4 0l6-6M-4 0l6 6','M-5-6h10L0 6z','M0-7v14M-5-3l10 6','M-5-6l10 12M5-6L-5 6','M-5 6V-6l10 12V-6','M0-7l5 7-5 7-5-7z','M-5-6h10M0-6v12','M-5 6l5-12 5 12M-3 1h6'];
+  for(let i=0;i<24;i++){const a=i/24*Math.PI*2,g=document.createElementNS(NS,'path');
+    g.setAttribute('d',glyphs[i%glyphs.length]);g.setAttribute('stroke-width','1');
+    g.setAttribute('transform',`rotate(${a*180/Math.PI}) translate(0 -158) scale(1.05)`);rg.appendChild(g)}
+  const c=document.createElementNS(NS,'circle');c.setAttribute('r','146');c.setAttribute('stroke-width','.6');rg.appendChild(c);
+  const c2=document.createElementNS(NS,'circle');c2.setAttribute('r','170');c2.setAttribute('stroke-width','.6');rg.appendChild(c2);
+  // neural net in center
+  const net=$('#net');const pts=[];for(let i=0;i<14;i++){const a=Math.random()*Math.PI*2,r=Math.sqrt(Math.random())*92;pts.push([Math.cos(a)*r,Math.sin(a)*r])}
+  pts.push([0,0]);
+  pts.forEach((p,i)=>pts.forEach((q,j)=>{if(j>i&&Math.hypot(p[0]-q[0],p[1]-q[1])<62){const l=document.createElementNS(NS,'line');l.setAttribute('x1',p[0]);l.setAttribute('y1',p[1]);l.setAttribute('x2',q[0]);l.setAttribute('y2',q[1]);l.setAttribute('stroke-width','.5');l.setAttribute('opacity','.6');net.appendChild(l)}}));
+  pts.forEach((p,i)=>{const d=document.createElementNS(NS,'circle');d.setAttribute('cx',p[0]);d.setAttribute('cy',p[1]);d.setAttribute('r',i===pts.length-1?5:2);d.setAttribute('fill','#3ff5e3');d.setAttribute('stroke','none');net.appendChild(d)});
+})();
+
+/* ---------- embers ---------- */
+function embers(id,density,col){const cv=document.getElementById(id);if(!cv)return;const cx=cv.getContext('2d');let W,H,ps=[];const dpr=Math.min(devicePixelRatio||1,2);
+  function rs(){W=cv.offsetWidth;H=cv.offsetHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);
+    ps=Array.from({length:Math.round(W*H/density)},()=>mk(true))}
+  function mk(init){return{x:Math.random()*W,y:init?Math.random()*H:H+10,vy:-(Math.random()*.7+.2),vx:(Math.random()-.5)*.3,r:Math.random()*1.8+.4,l:Math.random(),c:Math.random()<.18?'217,70,239':col,w:Math.random()*6}}
+  rs();addEventListener('resize',rs);let vis=true;
+  new IntersectionObserver(e=>vis=e[0].isIntersecting).observe(cv);
+  function f(t){if(vis){cx.clearRect(0,0,W,H);
+    for(const p of ps){p.y+=p.vy;p.x+=p.vx+Math.sin(t/900+p.w)*.25;p.l+=.003;if(p.y<-10||p.l>1.6)Object.assign(p,mk(false),{l:0});
+      const a=Math.sin(Math.min(p.l,1)*Math.PI)*.9;cx.fillStyle=`rgba(${p.c},${a})`;cx.shadowColor=`rgba(${p.c},1)`;cx.shadowBlur=8;cx.beginPath();cx.arc(p.x,p.y,p.r,0,7);cx.fill()}
+    cx.shadowBlur=0}
+    if(!reduce)requestAnimationFrame(f)}
+  requestAnimationFrame(f)}
+embers('embers',5200,'63,245,227');embers('embers2',7000,'63,245,227');embers('pcv',2600,'63,245,227');
+
+/* ---------- attributes ---------- */
+const AT=[["Agent orchestration",95],["RAG & retrieval",92],["Evaluation & testing",90],["Prompt-injection defense",88],["Backend & APIs",86],["Machine learning",85]];
+$('#attrs').innerHTML=AT.map(a=>`<div class="at"><div class="l"><span>${a[0]}</span><b>${a[1]}</b></div><div class="t"><i data-w="${a[1]}"></i></div></div>`).join('');
+
+/* ---------- icons ---------- */
+const IC={
+ job:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/>',
+ bug:'<path d="M8 8a4 4 0 0 1 8 0v1H8z"/><rect x="7" y="9" width="10" height="11" rx="5"/><path d="M12 12v8M3 13h4M17 13h4M4 19l3-2M20 19l-3-2M4 7l3 2M20 7l-3 2"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+ bag:'<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/><path d="M9 12a3 3 0 0 0 6 0"/>',
+ cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5M22 9v6"/>',
+ heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/><path d="M7 11h2l1.5-2 2 4 1.5-2h3"/>',
+ fist:'<circle cx="12" cy="4.5" r="2"/><path d="M12 7v6l-3 7M12 13l3 7M7 9l5 1 5-3"/>',
+ brain:'<path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 6 1V5a3 3 0 0 0-3-1z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-6 1"/><path d="M3 12h3l1.5-2 2 4 1-2"/>',
+ /* skill glyphs for tools without an official logo pack */
+ graph:'<circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="6" r="2.2"/><circle cx="12" cy="18" r="2.2"/><circle cx="12" cy="9" r="1.6"/><path d="M7 6.8l3.6 1.6M17 6.8l-3.6 1.6M12 10.6v5.2"/>',
+ plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>',
+ crew:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20a6 6 0 0 1 12 0M10 20a6 6 0 0 1 12 0"/>',
+ bolt:'<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+ cone:'<path d="M12 2 5 20h14z"/><path d="M8 13h8M10 8h4"/>',
+ db:'<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+ search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M8 11h6M11 8v6"/>',
+ vec:'<path d="M4 20 20 4M20 4h-6M20 4v6M4 20h7M4 20v-7"/>',
+ doc:'<path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6M9 13h8M9 17h6"/>',
+ cut:'<rect x="3" y="4" width="18" height="4"/><rect x="3" y="10" width="18" height="4"/><rect x="3" y="16" width="18" height="4"/>',
+ chart:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+ shield:'<path d="M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/>',
+ quote:'<path d="M4 4h16v12H8l-4 4z"/><path d="M8 9h8M8 12h5"/>',
+ tool:'<path d="M14.7 6.3a4 4 0 0 0 5 5L22 14l-8 8-2.3-2.3a4 4 0 0 0-5-5L3 11l8-8z"/>',
+ json:'<path d="M8 3H6a2 2 0 0 0-2 2v4l-2 3 2 3v4a2 2 0 0 0 2 2h2M16 3h2a2 2 0 0 1 2 2v4l2 3-2 3v4a2 2 0 0 1-2 2h-2"/>',
+ flask2:'<path d="M9 2h6M10 2v6L4 20h16L14 8V2"/><path d="M7 14h10"/>',
+ sql:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M9 13h6"/>',
+ rl:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>'
+};
+const svg=k=>`<svg viewBox="0 0 24 24">${IC[k]}</svg>`;
+
+/* ---------- projects ---------- */
+const P=[
+ {n:"ShopGen AI",t:"agent",r:"leg",big:1,ic:"bag",c:["#6d28d9","#db2777"],ty:"Final Year Project · 2025–26",
+  d:"A conversational shopping agent inside WhatsApp. It finds products, compares prices and gives fashion advice by text or voice, in Urdu and English.",
+  k:[["<3s","Voice-to-reply latency"],["100+","Chats remembered"],["2","Languages"]],
+  b:["LangGraph multi-agent system for product discovery, real-time price comparison and personalised fashion picks.","Stateful memory with persistent session context, tracking preferences across 100+ interactions.","Pinecone semantic product search plus Firebase Realtime Database for inventory and sessions.","Multimodal pipeline: Whisper speech-to-text and TTS over WhatsApp via the Whapi REST API."],
+  i:["LangGraph","LangChain","GPT-4o mini","Whisper","Whapi","Pinecone","Firebase","FastAPI","SerpAPI"]},
+ {n:"AutoDev-Triage",t:"agent",r:"leg",big:1,ic:"bug",c:["#b91c1c","#f97316"],ty:"Multi-agent · GitHub issues",
+  d:"Four agents (Diagnoser, Researcher, Verifier and Integrator) read GitHub issues, research fixes and write root-cause analyses. They refuse to answer when there's no evidence.",
+  k:[["92%","Root-cause accuracy"],["0","Ungrounded URLs"],["55","Offline tests"]],
+  b:["Diagnoser, Researcher, Verifier and Integrator agents analyze GitHub issues and generate root-cause analyses.","Deterministic abstention, independent claim verification and code-enforced URL validation.","92% root-cause accuracy on a 12-issue benchmark, correct abstention on both no-evidence cases, zero ungrounded URLs.","Evaluation harness vs a single-LLM baseline on accuracy, latency and API cost.","55 offline tests with mocked LLM and network calls; Flask UI handles GitHub tokens per request without storing them."],
+  i:["Python","LangGraph","OpenAI API","Pydantic v2","Flask","pytest"]},
+ {n:"JobPilot",t:"agent",r:"epi",big:1,ic:"job",c:["#1d4ed8","#06b6d4"],ty:"MCP agent · Job search",
+  d:"A job-search copilot built on six custom MCP servers. It finds jobs, tailors CVs and tracks applications, with memory, guardrails and a human approving anything external.",
+  k:[["6","MCP servers"],["2","Memory types"],["vs TF-IDF","Baseline tested"]],
+  b:["Six custom MCP servers for job discovery, candidate profiling, memory, matching, CV tailoring and tracking.","Tiered tool permissions, human approval for external actions, schema validation and prompt-injection defense for scraped content.","LLM gateway with response caching and cost limits.","Token-budgeted context, rolling-summary compaction, semantic + episodic memory with confidence scoring and user-controlled deletion.","Claim verification checks generated CV bullets against profile facts.","Evaluation vs a TF-IDF baseline on human-labeled jobs, with ablations."],
+  i:["Python","FastMCP","OpenAI API","SQLite","sqlite-vec","Pydantic","Streamlit","Docker"]},
+ {n:"EngiGraph",t:"rag",r:"epi",big:1,ic:"gear",c:["#0e7490","#10b981"],ty:"Multi-agent RAG · Industrial",
+  d:"Upload an equipment manual and get a diagnostic report where every claim is checked and cites the exact page it came from.",
+  k:[["57","Benchmark questions"],["30+","Mocked tests"],["$0","Test API cost"]],
+  b:["Investigator, planner and verifier agents in LangGraph with a verification-revision loop and page-level citations.","Page-aware PDF extraction, overlapping chunking, Google embeddings, persistent ChromaDB, resumable indexing.","Structured-output validation, malformed-JSON retries, citation validation, deterministic safety notes.","Flask app with PDF upload, background jobs, live progress, per-claim citations and Markdown export.","57-question verified benchmark (direct, multi-passage, unanswerable) vs a single-call RAG baseline."],
+  i:["Python","LangGraph","LangChain","Groq","ChromaDB","PyMuPDF","Flask","pytest"]},
+ {n:"Scholarship Assistant",t:"rag",r:"rare",ic:"cap",c:["#b45309","#eab308"],ty:"RAG · EdTech · Live on Hugging Face",
+  d:"A bilingual scholarship finder for Pakistani students, with ScholarBot, eligibility checks, a strength analyser and a CV builder.",
+  k:[["12+","Features"],["Live","HF Spaces"]],
+  b:["Flask RAG pipeline with TF-IDF retrieval in Roman Urdu and English.","12+ features including ScholarBot, Eligibility Checker, Strength Analyser and CV Builder.","Deployed live on Hugging Face Spaces."],
+  i:["Flask","RAG","TF-IDF","Bilingual NLP","Hugging Face"]},
+ {n:"Counseling Companion",t:"agent",r:"rare",ic:"heart",c:["#be185d","#8b5cf6"],ty:"LLM · Mental wellness",
+  d:"An empathetic AI counselling assistant that remembers you between sessions and keeps its support personal.",
+  k:[["Cross","Session memory"],["Auto","Summaries"]],
+  b:["Empathetic counselling assistant with continuity across sessions.","Summarises each conversation automatically and keeps a persistent user profile.","Context-aware, personalised support with adaptive workflows."],
+  i:["LLMs","NLP","Vector DB","FastAPI"]},
+ {n:"MMA Vision",t:"ml",r:"rare",ic:"fist",c:["#991b1b","#1f2937"],ty:"Computer vision · Sports",
+  d:"Real-time motion tracking for Mixed Martial Arts, using deep learning and pose estimation to follow fighters live.",
+  k:[["Live","Tracking"],["Pose","Estimation"]],
+  b:["Real-time motion tracking with deep learning and pose estimation.","Built to track fighter movement accurately during live action."],
+  i:["Computer Vision","Pose Estimation","Deep Learning","Python"]},
+ {n:"Epilepsy Prediction",t:"ml",r:"rare",ic:"brain",c:["#0f766e","#4f46e5"],ty:"Medical AI · Deep learning",
+  d:"A neural network that reads EEG brain signals and looks for the patterns that come before a seizure, as an early warning.",
+  k:[["EEG","Signals"],["Early","Warning"]],
+  b:["Neural network for seizure prediction from EEG brain signals.","Deep learning on medical time-series to find patterns before epileptic events."],
+  i:["EEG","Deep Learning","Neural Networks","Python"]}
+];
+const RN={leg:"Legendary",epi:"Epic",rare:"Rare"};
+const banner=(p,id)=>`<div class="banner"><div class="bg" style="background:
+  radial-gradient(ellipse 60% 90% at 78% 50%,${p.c[1]}cc,transparent 70%),
+  radial-gradient(ellipse 70% 80% at 10% 100%,${p.c[0]}aa,transparent 70%),
+  linear-gradient(120deg,#04090c 10%,${p.c[0]}66 60%,#04090c)"></div>
+  <div class="ic"><svg viewBox="0 0 24 24"><defs><linearGradient id="bg${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="${p.c[1]}"/></linearGradient></defs><g stroke="url(#bg${id})" style="filter:drop-shadow(0 0 6px ${p.c[1]})">${IC[p.ic]}</g></svg></div>
+  <div class="wm">${p.n}</div><span class="rar ${p.r}">${RN[p.r]}</span></div>`;
+$('#ql').innerHTML=P.map((p,i)=>`
+<article class="pn q ${p.big?'':'sm'} rv" data-t="${p.t}" data-i="${i}" tabindex="0" role="button" aria-label="Open ${p.n}">
+  ${banner(p,i)}
+  <div class="qb">
+    <div class="ty">${p.ty}</div><h3>${p.n}</h3><p>${p.d}</p>
+    <div class="loot">${p.k.map(k=>`<div><b>${k[0]}</b><span>${k[1]}</span></div>`).join('')}</div>
+    <div class="qfoot"><div class="tech">${p.i.slice(0,5).map(x=>`<span>${x}</span>`).join('')}</div>
+    <span class="more">Details <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+  </div>
+</article>`).join('');
+$('#qf').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#qf button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.q').forEach(c=>{const ok=b.dataset.f==='all'||c.dataset.t===b.dataset.f;c.classList.toggle('hide',!ok);if(ok)c.classList.add('in')})};
+
+/* modal */
+const md=$('#modal');
+function openQ(i){const p=P[i];$('#mban').innerHTML=banner(p,'m');$('#mty').textContent=p.ty;$('#mt').textContent=p.n;
+  $('#ml').innerHTML=p.b.map(x=>`<li>${x}</li>`).join('');
+  $('#mr').innerHTML=p.k.map(k=>`<div><b>${k[0]}</b><span>${k[1]}</span></div>`).join('');
+  $('#mi').innerHTML=p.i.map(x=>`<span>${x}</span>`).join('');md.classList.add('open');$('#mx').focus()}
+const closeQ=()=>md.classList.remove('open');
+$('#ql').addEventListener('click',e=>{const q=e.target.closest('.q');if(q)openQ(+q.dataset.i)});
+$('#ql').addEventListener('keydown',e=>{const q=e.target.closest('.q');if(q&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openQ(+q.dataset.i)}});
+$('#mx').onclick=closeQ;md.onclick=e=>{if(e.target===md)closeQ()};addEventListener('keydown',e=>{if(e.key==='Escape')closeQ()});
+
+/* ---------- arsenal ---------- */
+// [name, logo file or glyph key, main?, invert?]
+const A={
+ "LLMs & Agents":[["LangGraph","g:graph",1],["LangChain","langchain",1],["MCP","g:plug",1],["OpenAI API","openai",1],["CrewAI","g:crew"],["Groq","g:bolt"],["HF Transformers","huggingface"],["Multi-Agent Systems","g:crew"],["Tool Calling","g:tool"],["Structured Outputs","g:json"],["Prompt Engineering","g:quote"]],
+ "RAG & Vector Search":[["RAG Pipelines","g:search",1],["Embeddings","g:vec",1],["ChromaDB","g:db",1],["Pinecone","g:cone"],["sqlite-vec","sqlite"],["FAISS","g:search"],["Chunking","g:cut"],["PyMuPDF","g:doc"]],
+ "Evaluation & Testing":[["Benchmark Design","g:chart",1],["pytest","pytest",1],["Pydantic","pydantic",1],["Ablation Studies","g:flask2"],["Claim Verification","g:shield"],["Citation Validation","g:quote"],["Injection Defense","g:shield"],["Mocked LLM Tests","g:tool"]],
+ "Machine Learning":[["PyTorch","pytorch",1],["scikit-learn","scikitlearn",0,0,1],["TensorFlow","tensorflow"],["BERT Fine-tuning","huggingface"],["Pandas","pandas",0,0,1],["NumPy","numpy"],["OpenCV","opencv"],["Reinforcement Learning","g:rl"]],
+ "Backend & Tools":[["Python","python",1],["FastAPI","fastapi",1],["Flask","flask",0,1],["Streamlit","streamlit"],["SQL","g:sql"],["PostgreSQL","postgresql"],["MongoDB","mongodb"],["Firebase","firebase"],["SQLite","sqlite"],["Docker","docker"],["Git","git"],["GitHub","github",0,1],["Vercel","vercel",0,1]]
+};
+$('#ars').innerHTML=Object.entries(A).map(([g,list])=>`<div class="grp rv"><h4><b>${String(Object.keys(A).indexOf(g)+1).padStart(2,'0')}</b> ${g}</h4><div class="sk">${
+  list.map(([n,src,m,inv,lt])=>`<div class="s ${m?'main':''}"><div class="im ${inv?'inv':''} ${lt?'lt':''}">${src.startsWith('g:')?svg(src.slice(2)):`<img src="icons/${src}.svg" alt="">`}</div><b>${n}</b></div>`).join('')
+}</div></div>`).join('');
+
+/* ---------- reveal + counters ---------- */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const el=e.target;el.classList.add('in');
+  el.querySelectorAll('[data-w]').forEach(b=>b.style.width=b.dataset.w+'%');
+  el.querySelectorAll('[data-n]').forEach(n=>{const end=+n.dataset.n,tg=n.querySelector('em')||n;let s=null;
+    const st=t=>{s??=t;const p=Math.min((t-s)/1500,1);tg.textContent=Math.round(end*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(st)};requestAnimationFrame(st)});
+  io.unobserve(el)}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+/* hero parallax */
+const sig=$('.sigil');addEventListener('pointermove',e=>{if(reduce)return;const x=(e.clientX/innerWidth-.5)*16,y=(e.clientY/innerHeight-.5)*12;sig.style.transform=`translate(calc(-50% + ${x}px),calc(-50% + ${y}px))`});
+</script>
+</body>
+</html>
